@@ -32,7 +32,8 @@ class WordTokenizer:
     def _chars(self):
         while True:
             # Here we're assuming the stream is buffered for reasonable
-            # performance.
+            # performance. It would be easy enough to wrap this in another loop
+            # over chars with a larger buffer size were it necessary.
             chars = self._stream.read(1)
             if chars == '':
                 return
@@ -54,7 +55,6 @@ class WordTokenizer:
         # needs to be returned.
         if word:
             yield word
-        return
 
     def __iter__(self):
         return self._words()
