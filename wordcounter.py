@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 
 import argparse
+import wordcounter
 
 
 def _invert_counts(counts):
@@ -28,14 +29,14 @@ if __name__ == "__main__":
                         help='a file from which words will be read')
     parser.add_argument('--encoding', nargs='?',
                         help='encoding of the given files',
-                        default='utf-8')
+                        default=wordcounter.DEFAULT_ENCODING)
     parser.add_argument('--limit', nargs='?',
                         help='number of results to return', type=int,
                         default=10)
     parser.add_argument('--ascii-only',
                         help='count only ASCII alphanumeric character sequences'
                              ' as words', action='store_true',
-                        default=False)
+                        default=wordcounter.DEFAULT_ASCII_ONLY)
     parsed_args = parser.parse_args()
 
     file_args = set(parsed_args.files)  # remove duplicates
