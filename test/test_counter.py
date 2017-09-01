@@ -15,14 +15,22 @@ _EXPECTED_COUNTS = {
 }
 
 
-class WordCounterTest(unittest.TestCase):
-    def test_counter(self):
-        import io
+def _count_words(words_string):
+    import io
 
-        wc = counter.WordCounter()
-        counts = wc.count_words(io.StringIO(_TEST_WORDS))
+    wc = counter.WordCounter()
+    return wc.count_words(io.StringIO(words_string))
+
+
+class WordCounterTest(unittest.TestCase):
+    def test_nonempty(self):
+        counts = _count_words(_TEST_WORDS)
         self.assertEqual(_EXPECTED_COUNTS, counts)
 
+    def test_empty(self):
+        counts = _count_words("")
+        self.assertEqual({}, counts)
 
-if __name__ == '__main__':
-    unittest.main()
+    def test_wordless(self):
+        counts = _count_words("\n\n\t  \t  \n{  ")
+        self.assertEqual({}, counts)

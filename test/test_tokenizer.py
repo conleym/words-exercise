@@ -28,5 +28,15 @@ class TokenizerTest(unittest.TestCase):
         self.assertEqual(_UNICODE_WORDS, list(words))
 
 
-if __name__ == '__main__':
-    unittest.main()
+def _unicode_tokenizer(string):
+    return tokenizer.WordTokenizer(io.StringIO(string))
+
+
+class EmptyTokenizerTest(unittest.TestCase):
+    def test_empty(self):
+        words = _unicode_tokenizer("")
+        self.assertEqual([], list(words))
+
+    def test_wordless(self):
+        words = _unicode_tokenizer("   \t\t\n +   ")
+        self.assertEqual([], list(words))

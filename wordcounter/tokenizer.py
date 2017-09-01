@@ -22,7 +22,8 @@ class WordTokenizer:
         """Create an instance.
 
         :param stream: an io.TextIO object or similar. Must have a read method
-         taking an int and returning a string.
+         taking an int and returning a string. For performance reasons, this
+         stream should be buffered.
         :param word_test: function taking a string and returning True iff
          the string contains only word characters. Default is str.isalnum.
         """
@@ -35,7 +36,7 @@ class WordTokenizer:
             # performance. It would be easy enough to wrap this in another loop
             # over chars with a larger buffer size were it necessary.
             chars = self._stream.read(1)
-            if chars == '':
+            if chars == '':  # EOF
                 return
             yield chars
 
