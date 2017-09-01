@@ -39,6 +39,6 @@ if __name__ == "__main__":
                         default=wordcounter.DEFAULT_ASCII_ONLY)
     parsed_args = parser.parse_args()
 
-    file_args = set(parsed_args.files)  # remove duplicates
+    file_args = frozenset(parsed_args.files)  # remove duplicates
     print(top_words(file_args, parsed_args.encoding, parsed_args.limit,
                     parsed_args.ascii_only))
