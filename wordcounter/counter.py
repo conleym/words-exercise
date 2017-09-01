@@ -8,10 +8,16 @@ def _update_count(word_count, current_word):
     word_count[current_word] = current_word_count + 1
 
 
-def count_file_words(file, encoding):
+def _tokenizer(stream, ascii_only):
+    if ascii_only:
+        return tokenizer.WordTokenizer(stream, tokenizer.is_ascii_alnum)
+    return tokenizer.WordTokenizer(stream)
+
+
+def count_file_words(file, encoding, ascii_only):
     word_count = {}
     with io.open(file, encoding=encoding) as stream:
-        words = tokenizer.WordTokenizer(stream)
+        words = _tokenizer(stream, ascii_only)
         for word in words:
             _update_count(word_count, word.lower())
     return word_count
@@ -22,8 +28,8 @@ def _merge_counts(totals, new_counts):
         totals[k] = totals.get(k, 0) + v
 
 
-def count_words(files, encoding):
+def count_words(files, encoding, ascii_only):
     totals = {}
     for file in files:
-        _merge_counts(totals, count_file_words(file, encoding))
+        _merge_counts(totals, count_file_words(file, encoding, ascii_only))
     return totals

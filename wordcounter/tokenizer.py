@@ -27,6 +27,7 @@ class WordTokenizer:
          the string contains only word characters. Default is str.isalnum.
         """
         self._stream = stream
+        self._is_string = isinstance(stream, str)
         self._word_test = word_test
 
     def _chars(self):
