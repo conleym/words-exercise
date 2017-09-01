@@ -1,7 +1,7 @@
 import io
 
 import wordcounter
-from wordcounter import tokenizer
+from wordcounter import word_tokenizer
 
 
 def _merge_counts(totals, new_counts):
@@ -17,21 +17,23 @@ def count_words(streams_or_paths, encoding, ascii_only):
     return totals
 
 
-def _update_count(word_counts, current_word):
+def _update_counts(word_counts, current_word):
     current_word_count = word_counts.get(current_word, 0)
     word_counts[current_word] = current_word_count + 1
 
 
 class WordCounter:
+    """Counts the words in a single file."""
     def __init__(self, encoding=wordcounter.DEFAULT_ENCODING,
                  ascii_only=wordcounter.DEFAULT_ASCII_ONLY):
         self._ascii_only = ascii_only
         self._encoding = encoding
 
-    def _tokenizer(self, stream):
+    def _words(self, stream):
         if self._ascii_only:
-            return tokenizer.WordTokenizer(stream, tokenizer.is_ascii_alnum)
-        return tokenizer.WordTokenizer(stream)
+            return word_tokenizer.WordTokenizer(stream,
+                                                word_tokenizer.is_ascii_alnum)
+        return word_tokenizer.WordTokenizer(stream)
 
     def count_words(self, stream_or_path):
         if isinstance(stream_or_path, str):
@@ -40,7 +42,7 @@ class WordCounter:
             stream = stream_or_path
         word_counts = {}
         with stream:
-            words = self._tokenizer(stream)
+            words = self._words(stream)
             for word in words:
-                _update_count(word_counts, word.lower())
+                _update_counts(word_counts, word.lower())
         return word_counts
