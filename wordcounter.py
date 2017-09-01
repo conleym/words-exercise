@@ -14,9 +14,9 @@ def _invert_counts(counts):
 
 
 def top_words(streams, encoding, n, ascii_only):
-    from wordcounter import counter
+    from wordcounter import word_counter
 
-    counts = counter.count_words(streams, encoding, ascii_only)
+    counts = word_counter.count_words(streams, encoding, ascii_only)
     inverted = _invert_counts(counts)
     sorted_counts = sorted(inverted.items(), key=lambda x: x[0], reverse=True)
     return sorted_counts[:n]

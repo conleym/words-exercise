@@ -1,5 +1,5 @@
 import unittest
-from wordcounter import counter
+from wordcounter import word_counter
 
 
 _TEST_WORDS = """
@@ -18,7 +18,7 @@ _EXPECTED_COUNTS = {
 def _count_words(words_string):
     import io
 
-    wc = counter.WordCounter()
+    wc = word_counter.WordCounter()
     return wc.count_words(io.StringIO(words_string))
 
 
