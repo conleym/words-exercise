@@ -20,7 +20,8 @@ class TokenizerTest(unittest.TestCase):
         self.stream = io.StringIO(_TEST_WORDS)
 
     def test_ascii(self):
-        words = word_tokenizer.WordTokenizer(self.stream, word_tokenizer.is_ascii_alnum)
+        words = word_tokenizer.WordTokenizer(self.stream,
+                                             word_tokenizer.is_ascii_alnum)
         self.assertEqual(_ASCII_WORDS, list(words))
 
     def test_unicode(self):
