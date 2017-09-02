@@ -14,4 +14,4 @@ RUN apt-get update && \
   pip3 install dispy psutil netifaces
 
 COPY ./docker-entrypoint.sh /
-ENTRYPOINT ["bash", "/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
