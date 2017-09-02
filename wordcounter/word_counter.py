@@ -4,7 +4,7 @@ import wordcounter
 from wordcounter import word_tokenizer
 
 
-def _merge_counts(totals, new_counts):
+def merge_counts(totals, new_counts):
     for k, v in new_counts.items():
         totals[k] = totals.get(k, 0) + v
 
@@ -13,11 +13,11 @@ def count_words(streams_or_paths, encoding, ascii_only):
     totals = {}
     counter = WordCounter(encoding, ascii_only)
     for stream_or_path in streams_or_paths:
-        _merge_counts(totals, counter.count_words(stream_or_path))
+        merge_counts(totals, counter.count_words(stream_or_path))
     return totals
 
 
-def _update_counts(word_counts, current_word):
+def update_counts(word_counts, current_word):
     current_word_count = word_counts.get(current_word, 0)
     word_counts[current_word] = current_word_count + 1
 
@@ -44,5 +44,5 @@ class WordCounter:
         with stream:
             words = self._words(stream)
             for word in words:
-                _update_counts(word_counts, word.lower())
+                update_counts(word_counts, word.lower())
         return word_counts
