@@ -23,7 +23,7 @@ def update_counts(word_counts, current_word):
 
 
 class WordCounter:
-    """Counts the words in a single file."""
+    """Counts the words in a file."""
     def __init__(self, encoding=wordcounter.DEFAULT_ENCODING,
                  ascii_only=wordcounter.DEFAULT_ASCII_ONLY):
         self._ascii_only = ascii_only

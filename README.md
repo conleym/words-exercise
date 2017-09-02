@@ -1,11 +1,17 @@
 # Word Counter
 
 This is a python 3
-(3.6 is recommended)
+(3.5 is recommended)
 script that counts alphanumeric
 (either Unicode or ASCII, depending on command-line flags)
 sequences in a set of files
 and reports on the most-frequently-occurring.
+
+
+## Prerequisites
+
+You must install some python modules to use this program. You can do so via
+`pip install -r requirements.txt`
 
 
 ## Running the Program
@@ -33,6 +39,23 @@ optional arguments:
                         default (51348) is assumed. Example:
                         0.0.0.0:9999,127.0.0.5
 ```
+
+
+### Distributed Operation
+
+Computation can be distributed via 
+[dispy](http://dispy.sourceforge.net/),
+which handles distribution of code and files to nodes running `dispyserver.py`.
+
+To install the dispy server, simply run
+`pip install -r dispy-server-requirements.txt`.
+
+To start the server on <port>, run
+`dispynode.py -i 0.0.0.0 --debug --daemon -p <port>`.
+
+You should then be able to pass the hostname or IP address, along with the port,
+to the wordcounter using `--nodes`.
+
 
 ## Running Tests
 

@@ -13,14 +13,15 @@ def _invert_counts(counts):
     return inverted
 
 
-def top_words(streams, encoding, n, ascii_only, nodes):
+def top_words(streams_or_paths, encoding, n, ascii_only, nodes):
     from wordcounter import word_counter, dispy_counter
 
     if nodes:
-        counts = dispy_counter.dispy_count_words(streams, encoding, ascii_only,
-                                                 nodes)
+        counts = dispy_counter.dispy_count_words(streams_or_paths, encoding,
+                                                 ascii_only, nodes)
     else:
-        counts = word_counter.count_words(streams, encoding, ascii_only)
+        counts = word_counter.count_words(streams_or_paths, encoding,
+                                          ascii_only)
     inverted = _invert_counts(counts)
     sorted_counts = sorted(inverted.items(), key=lambda x: x[0], reverse=True)
     return sorted_counts[:n]
