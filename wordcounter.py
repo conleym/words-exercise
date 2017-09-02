@@ -13,10 +13,15 @@ def _invert_counts(counts):
     return inverted
 
 
-def top_words(streams, encoding, n, ascii_only):
-    from wordcounter import word_counter
+def top_words(streams_or_paths, encoding, n, ascii_only, nodes):
+    from wordcounter import word_counter, dispy_counter
 
-    counts = word_counter.count_words(streams, encoding, ascii_only)
+    if nodes:
+        counts = dispy_counter.dispy_count_words(streams_or_paths, encoding,
+                                                 ascii_only, nodes)
+    else:
+        counts = word_counter.count_words(streams_or_paths, encoding,
+                                          ascii_only)
     inverted = _invert_counts(counts)
     sorted_counts = sorted(inverted.items(), key=lambda x: x[0], reverse=True)
     return sorted_counts[:n]
@@ -37,8 +42,18 @@ if __name__ == "__main__":
                         help='count only ASCII alphanumeric character sequences'
                              ' as words', action='store_true',
                         default=wordcounter.DEFAULT_ASCII_ONLY)
+    parser.add_argument('--nodes',
+                        help='comma-separated list of addresses (with optional'
+                             ' ports) on which computations may be run. the'
+                             ' host must be running a dispynode server. If no'
+                             ' port is given, the default (51348) is assumed.'
+                             ' Example: 0.0.0.0:9999,127.0.0.5',
+                        default=None)
     parsed_args = parser.parse_args()
+    arg_nodes = None
+    if parsed_args.nodes is not None:
+        arg_nodes = [node.split(':') for node in parsed_args.nodes.split(',')]
 
     file_args = frozenset(parsed_args.files)  # remove duplicates
     print(top_words(file_args, parsed_args.encoding, parsed_args.limit,
-                    parsed_args.ascii_only))
+                    parsed_args.ascii_only, arg_nodes))
