@@ -49,7 +49,6 @@ if __name__ == "__main__":
                         default='')
     parsed_args = parser.parse_args()
     nodes = [node.split(':') for node in parsed_args.nodes.split('\s*,\s*')]
-    print(nodes)
     file_args = frozenset(parsed_args.files)  # remove duplicates
     print(top_words(file_args, parsed_args.encoding, parsed_args.limit,
                     parsed_args.ascii_only, nodes))
