@@ -12,7 +12,7 @@ and reports on the most-frequently-occurring.
 
 ```
 usage: wordcounter.py [-h] [--encoding [ENCODING]] [--limit [LIMIT]]
-                      [--ascii-only]
+                      [--ascii-only] [--nodes NODES]
                       FILE [FILE ...]
 
 Find the most common words in a corpus of files.
@@ -27,6 +27,11 @@ optional arguments:
   --limit [LIMIT]       number of results to return
   --ascii-only          count only ASCII alphanumeric character sequences as
                         words
+  --nodes NODES         comma-separated list of addresses (with optional
+                        ports) on which computations may be run. the host must
+                        be running a dispynode server. If no port is given, the
+                        default (51348) is assumed. Example:
+                        0.0.0.0:9999,127.0.0.5
 ```
 
 ## Running Tests

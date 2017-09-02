@@ -44,8 +44,8 @@ if __name__ == "__main__":
     parser.add_argument('--nodes',
                         help='comma-separated list of addresses (with optional'
                              ' ports) on which computations may be run. the'
-                             ' host must be running a dispy server. If no port'
-                             ' is given, the default (51348) is assumed.'
+                             ' host must be running a dispynode server. If no'
+                             ' port is given, the default (51348) is assumed.'
                              ' Example: 0.0.0.0:9999,127.0.0.5',
                         default='')
     parsed_args = parser.parse_args()
