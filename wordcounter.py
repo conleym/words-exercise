@@ -47,9 +47,12 @@ if __name__ == "__main__":
                              ' host must be running a dispynode server. If no'
                              ' port is given, the default (51348) is assumed.'
                              ' Example: 0.0.0.0:9999,127.0.0.5',
-                        default='')
+                        default=None)
     parsed_args = parser.parse_args()
-    nodes = [node.split(':') for node in parsed_args.nodes.split(',')]
+    arg_nodes = None
+    if parsed_args.nodes is not None:
+        arg_nodes = [node.split(':') for node in parsed_args.nodes.split(',')]
+
     file_args = frozenset(parsed_args.files)  # remove duplicates
     print(top_words(file_args, parsed_args.encoding, parsed_args.limit,
-                    parsed_args.ascii_only, nodes))
+                    parsed_args.ascii_only, arg_nodes))
