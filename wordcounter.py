@@ -44,11 +44,12 @@ if __name__ == "__main__":
     parser.add_argument('--nodes',
                         help='comma-separated list of addresses (with optional'
                              ' ports) on which computations may be run. the'
-                             ' host must be running a dispy server. Example:'
-                             ' 0.0.0.0:9999,127.0.0.5',
+                             ' host must be running a dispy server. If no port'
+                             ' is given, the default (51348) is assumed.'
+                             ' Example: 0.0.0.0:9999,127.0.0.5',
                         default='')
     parsed_args = parser.parse_args()
-    nodes = [node.split(':') for node in parsed_args.nodes.split('\s*,\s*')]
+    nodes = [node.split(':') for node in parsed_args.nodes.split(',')]
     file_args = frozenset(parsed_args.files)  # remove duplicates
     print(top_words(file_args, parsed_args.encoding, parsed_args.limit,
                     parsed_args.ascii_only, nodes))
