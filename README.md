@@ -45,7 +45,8 @@ optional arguments:
 
 Computation can be distributed via 
 [dispy](http://dispy.sourceforge.net/),
-which handles distribution of code and files to nodes running `dispyserver.py`.
+which handles distribution of code and files to nodes running
+[dispynode](http://dispy.sourceforge.net/dispynode.html).
 
 To install the dispy server, simply run
 `pip install -r dispy-server-requirements.txt`.
@@ -59,7 +60,7 @@ to the wordcounter using `--nodes`.
 
 ## Running Tests
 
-Test are written with
+Tests are written with
 [unittest](https://docs.python.org/3/library/unittest.html).
 
 You can run:
