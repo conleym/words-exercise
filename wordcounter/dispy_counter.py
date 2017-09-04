@@ -1,24 +1,26 @@
 """Count words in a series of files using distributed computation."""
 
-from typing import Callable, Dict, Iterable, Tuple, Union
+from typing import Callable, Dict, Iterable, no_type_check
 
 import dispy
+from dispy import NodeAllocate
+
 from wordcounter import word_counter
 from wordcounter.word_counter import WordCounter
 
 
 _DispyCallbackType = Callable[[int, dispy.DispyNode, dispy.DispyJob], None]
-DispyNodeType = Union[str, Tuple[str], Tuple[str, int], Tuple[str, int, int]]
 
 
-# Don't use annotations here -- not sure how to send them to nodes.
+# Don't use type annotations here -- not sure how to send them to nodes.
+# Also don't use decorators. They seem not to go, either :(
 def _computation(path, counter):
     """Computation to distribute to the nodes."""
     return counter.count_words(path)
 
 
 def _dispy_create_cluster(status_cb: _DispyCallbackType,
-                          nodes: Iterable[DispyNodeType]) -> dispy.JobCluster:
+                          nodes: Iterable[NodeAllocate]) -> dispy.JobCluster:
     """Create a dispy job cluster to run word counting jobs."""
     import wordcounter
 
@@ -32,7 +34,7 @@ def _dispy_create_cluster(status_cb: _DispyCallbackType,
 
 def dispy_count_words(paths: Iterable[str],
                       counter: WordCounter,
-                      nodes: Iterable[DispyNodeType]) -> Dict[str, int]:
+                      nodes: Iterable[NodeAllocate]) -> Dict[str, int]:
     """Count words in one or more files and return total counts.
 
     The computation is distributed to a dispy cluster consisting of the given
@@ -48,7 +50,9 @@ def dispy_count_words(paths: Iterable[str],
     """
     totals = {}  # type: Dict[str, int]
 
-    # dispy will complain if we try to annotate this.
+    # dispy will complain if we try to annotate this. It's ok w/ decorators,
+    # though.
+    @no_type_check
     def status_cb(status, _node, _job):
         if status == dispy.DispyJob.Finished:
             word_counter.merge_counts(totals, _job.result)

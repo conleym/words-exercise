@@ -5,8 +5,9 @@
 import argparse
 from typing import Dict, Iterable
 
+from dispy import NodeAllocate
+
 from wordcounter import (DEFAULT_ASCII_ONLY, DEFAULT_ENCODING, StreamOrPath)
-from wordcounter.dispy_counter import DispyNodeType
 
 
 # Dict of counts -> list of words counted that many times.
@@ -26,7 +27,7 @@ def top_words(streams_or_paths: Iterable[StreamOrPath],
               encoding: str,
               n: int,
               ascii_only: bool,
-              nodes: Iterable[DispyNodeType]) -> ResultType:
+              nodes: Iterable[NodeAllocate]) -> ResultType:
     from wordcounter import word_counter, dispy_counter
 
     counter = word_counter.WordCounter(encoding, ascii_only)
@@ -66,6 +67,8 @@ if __name__ == "__main__":
     arg_nodes = []
     if parsed_args.nodes is not None:
         arg_nodes = [node.split(':') for node in parsed_args.nodes.split(',')]
+        # This makes type checking _much_ easier.
+        arg_nodes = [NodeAllocate(*node) for node in arg_nodes]
 
     file_args = frozenset(parsed_args.files)  # remove duplicates
 

@@ -1,7 +1,7 @@
 """Iterate over words in a stream."""
 
 import re
-from typing import Callable, Generator, IO, Iterator, Iterable
+from typing import Callable, Generator, IO, Iterable
 
 
 _ASCII_PATTERN = re.compile('[a-zA-Z0-9]+')
