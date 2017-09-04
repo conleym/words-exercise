@@ -1,3 +1,5 @@
+"""Count words in a group of files or streams."""
+
 import io
 from typing import Dict, IO, Iterable
 
@@ -5,7 +7,7 @@ from wordcounter import (DEFAULT_ASCII_ONLY, DEFAULT_ENCODING, StreamOrPath,
                          word_tokenizer)
 
 
-def merge_counts(totals: Dict[str, int], new_counts: Dict[str, int]):
+def merge_counts(totals: Dict[str, int], new_counts: Dict[str, int]) -> None:
     """Merge counts from a source into a running total over several sources."""
     for k, v in new_counts.items():
         totals[k] = totals.get(k, 0) + v
@@ -13,12 +15,13 @@ def merge_counts(totals: Dict[str, int], new_counts: Dict[str, int]):
 
 class WordCounter:
     """Counts the words in a body of text."""
+
     def __init__(self, encoding: str=DEFAULT_ENCODING,
-                 ascii_only: str=DEFAULT_ASCII_ONLY):
+                 ascii_only: bool=DEFAULT_ASCII_ONLY) -> None:
         """Create an instance.
 
-        :param encoding: The text encoding to use when opening files. Unused for
-         streams.
+        :param encoding: The text encoding to use when opening files. Unused
+         for streams.
         :param ascii_only: If True, count only ASCII alphanumeric character
          sequences as words. Otherwise, count Unicode alphanumeric sequences as
          words.
@@ -26,7 +29,7 @@ class WordCounter:
         self._ascii_only = ascii_only
         self._encoding = encoding
 
-    def _words(self, stream: IO[str]):
+    def _words(self, stream: IO[str]) -> word_tokenizer.WordTokenizer:
         if self._ascii_only:
             return word_tokenizer.WordTokenizer(stream,
                                                 word_tokenizer.is_ascii_alnum)
@@ -43,7 +46,7 @@ class WordCounter:
             stream = io.open(stream_or_path, encoding=self._encoding)
         else:
             stream = stream_or_path
-        word_counts = {}
+        word_counts = {}  # type: Dict[str, int]
         with stream:
             words = self._words(stream)
             for word in words:
@@ -53,15 +56,16 @@ class WordCounter:
         return word_counts
 
 
-def count_words(streams_or_paths: Iterable[StreamOrPath], counter: WordCounter):
+def count_words(streams_or_paths: Iterable[StreamOrPath],
+                counter: WordCounter) -> Dict[str, int]:
     """Count words in one or more input sources and return total counts.
 
-    :param streams_or_paths: the input sources.
-    :param counter: the WordCounter to use.
-    :return: a dict mapping each word found to the number of times it was found
+    :param streams_or_paths: The input sources.
+    :param counter: The WordCounter to use.
+    :return: A dict mapping each word found to the number of times it was found
      in all the input sources.
     """
-    totals = {}
+    totals = {}  # type: Dict[str, int]
     for stream_or_path in streams_or_paths:
         merge_counts(totals, counter.count_words(stream_or_path))
     return totals

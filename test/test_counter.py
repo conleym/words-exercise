@@ -1,4 +1,6 @@
 import unittest
+from typing import Dict
+
 from wordcounter import word_counter
 
 
@@ -15,7 +17,7 @@ _EXPECTED_COUNTS = {
 }
 
 
-def _count_words(words_string):
+def _count_words(words_string: str) -> Dict[str, int]:
     import io
 
     wc = word_counter.WordCounter()

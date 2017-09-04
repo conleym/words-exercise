@@ -1,10 +1,19 @@
 #! /usr/bin/env python3
 
+"""Count words in some files and display the most-frequently-occurring."""
+
 import argparse
-import wordcounter
+from typing import Dict, Iterable
+
+from wordcounter import (DEFAULT_ASCII_ONLY, DEFAULT_ENCODING, StreamOrPath)
+from wordcounter.dispy_counter import DispyNodeType
 
 
-def _invert_counts(counts):
+# Dict of counts -> list of words counted that many times.
+ResultType = Dict[int, Iterable[str]]
+
+
+def _invert_counts(counts: Dict[str, int]) -> ResultType:
     inverted = {}
     for k, v in counts.items():
         words_for_count = inverted.get(v, [])
@@ -13,7 +22,11 @@ def _invert_counts(counts):
     return inverted
 
 
-def top_words(streams_or_paths, encoding, n, ascii_only, nodes):
+def top_words(streams_or_paths: Iterable[StreamOrPath],
+              encoding: str,
+              n: int,
+              ascii_only: bool,
+              nodes: Iterable[DispyNodeType]) -> ResultType:
     from wordcounter import word_counter, dispy_counter
 
     counter = word_counter.WordCounter(encoding, ascii_only)
@@ -29,19 +42,19 @@ def top_words(streams_or_paths, encoding, n, ascii_only, nodes):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Find the most common words in a corpus of files.')
+        description=__doc__)
     parser.add_argument('files', nargs='+', metavar='FILE',
                         help='a file from which words will be read')
     parser.add_argument('--encoding', nargs='?',
                         help='encoding of the given files',
-                        default=wordcounter.DEFAULT_ENCODING)
+                        default=DEFAULT_ENCODING)
     parser.add_argument('--limit', nargs='?',
                         help='number of results to return', type=int,
                         default=10)
     parser.add_argument('--ascii-only',
-                        help='count only ASCII alphanumeric character sequences'
-                             ' as words', action='store_true',
-                        default=wordcounter.DEFAULT_ASCII_ONLY)
+                        help='count only ASCII alphanumeric character '
+                             ' sequences as words', action='store_true',
+                        default=DEFAULT_ASCII_ONLY)
     parser.add_argument('--nodes',
                         help='comma-separated list of addresses (with optional'
                              ' ports) on which computations may be run. the'
@@ -50,7 +63,7 @@ if __name__ == "__main__":
                              ' Example: 0.0.0.0:9999,127.0.0.5',
                         default=None)
     parsed_args = parser.parse_args()
-    arg_nodes = None
+    arg_nodes = []
     if parsed_args.nodes is not None:
         arg_nodes = [node.split(':') for node in parsed_args.nodes.split(',')]
 

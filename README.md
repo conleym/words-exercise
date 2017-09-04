@@ -8,20 +8,22 @@ sequences in a set of files
 and reports on the most-frequently-occurring.
 
 
-## Prerequisites
+## Running the Program
+
+### Prerequisites
 
 You must install some python modules to use this program. You can do so via
 `pip install -r requirements.txt`
 
 
-## Running the Program
+### Usage
 
 ```
 usage: wordcounter.py [-h] [--encoding [ENCODING]] [--limit [LIMIT]]
                       [--ascii-only] [--nodes NODES]
                       FILE [FILE ...]
 
-Find the most common words in a corpus of files.
+Count words in some files and display the most-frequently-occurring.
 
 positional arguments:
   FILE                  a file from which words will be read
@@ -35,8 +37,8 @@ optional arguments:
                         words
   --nodes NODES         comma-separated list of addresses (with optional
                         ports) on which computations may be run. the host must
-                        be running a dispynode server. If no port is given, the
-                        default (51348) is assumed. Example:
+                        be running a dispynode server. If no port is given,
+                        the default (51348) is assumed. Example:
                         0.0.0.0:9999,127.0.0.5
 ```
 
@@ -48,17 +50,24 @@ Computation can be distributed via
 which handles distribution of code and files to nodes running
 [dispynode](http://dispy.sourceforge.net/dispynode.html).
 
-To install the dispy server, simply run
+Because our computations require python 3, the dispy server nodes must also be running python 3.
+
+To install the dispy server on a node, simply run
 `pip install -r dispy-server-requirements.txt`.
 
-To start the server on <port>, run
-`dispynode.py -i 0.0.0.0 --debug --daemon -p <port>`.
+To start the server listening on PORT, run
+`dispynode.py -i 0.0.0.0 --debug --daemon -p PORT`.
 
-You should then be able to pass the hostname or IP address, along with the port,
-to the wordcounter using `--nodes`.
+You should then be able to pass the hostname or IP address, along with the port, to the wordcounter using `--nodes`.
 
 
-## Running Tests
+## Development Tasks
+
+To install runtime requirements plus required developer tools, run
+`pip install -r dev-requirements.txt`.
+
+
+### Running Tests
 
 Tests are written with
 [unittest](https://docs.python.org/3/library/unittest.html).
@@ -70,4 +79,14 @@ You can run:
 `python3 -m unittest test.test_counter)`,
 * the whole suite via
 `python3 -m unittest discover test`.
+
+
+### Type Annotation Checking
+
+You can check type annotations with
+`mypy wordcounter --ignore-missing-imports`
+
+See the
+[mypy docs](http://mypy.readthedocs.io/en/latest/)
+for more details.
 

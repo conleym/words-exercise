@@ -1,0 +1,6 @@
+# Required to run the word counter program and development tools.
+
+-r requirements.txt
+mypy==0.521
+# Required to generate mypy reports
+lxml==3.8.0

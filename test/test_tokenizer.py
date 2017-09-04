@@ -29,7 +29,7 @@ class TokenizerTest(unittest.TestCase):
         self.assertEqual(_UNICODE_WORDS, list(words))
 
 
-def _unicode_tokenizer(string):
+def _unicode_tokenizer(string: str):
     return word_tokenizer.WordTokenizer(io.StringIO(string))
 
 
