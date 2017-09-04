@@ -1,12 +1,13 @@
 """Tools for extracting words from a stream."""
 
 import re
+from typing import Callable, IO
 
 
 _ASCII_PATTERN = re.compile('[a-zA-Z0-9]+')
 
 
-def is_ascii_alnum(s):
+def is_ascii_alnum(s: str):
     """Does the given string contain only ASCII alphanumeric characters?
 
     :param s: a string
@@ -18,13 +19,13 @@ def is_ascii_alnum(s):
 class WordTokenizer:
     """An iterator over words drawn from a stream."""
 
-    def __init__(self, stream, word_test=str.isalnum):
+    def __init__(self, stream: IO[str],
+                 word_test: Callable[[str], bool]=str.isalnum):
         """Create an instance.
 
-        :param stream: an io.TextIO object or similar. Must have a read method
-         taking an int and returning a string. For performance reasons, this
+        :param stream: The stream to tokenize. For performance reasons, this
          stream should be buffered.
-        :param word_test: function taking a string and returning True iff
+        :param word_test: A callable taking a string and returning True iff
          the string contains only word characters. Default is str.isalnum.
         """
         self._stream = stream
