@@ -11,7 +11,7 @@ def dispy_create_cluster(computation, status_cb, nodes):
                             reentrant=True)
 
 
-def dispy_count_words(paths, encoding, ascii_only, nodes):
+def dispy_count_words(paths, counter, nodes):
     totals = {}
 
     def status_cb(status, _node, _job):
@@ -24,11 +24,10 @@ def dispy_count_words(paths, encoding, ascii_only, nodes):
     def computation(_path, _wc):
         return _wc.count_words(_path)
 
-    wc = word_counter.WordCounter(encoding, ascii_only)
     with dispy_create_cluster(computation, status_cb, nodes) as cluster:
         cluster.print_status()
         for path in paths:
-            job = cluster.submit(path, wc, dispy_job_depends=[path])
+            job = cluster.submit(path, counter, dispy_job_depends=[path])
             job.id = path
         cluster.wait()
         cluster.print_status()

@@ -9,9 +9,8 @@ def merge_counts(totals, new_counts):
         totals[k] = totals.get(k, 0) + v
 
 
-def count_words(streams_or_paths, encoding, ascii_only):
+def count_words(streams_or_paths, counter):
     totals = {}
-    counter = WordCounter(encoding, ascii_only)
     for stream_or_path in streams_or_paths:
         merge_counts(totals, counter.count_words(stream_or_path))
     return totals
